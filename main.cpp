@@ -21,20 +21,30 @@ char** pamyat_dlya_matritzi(char** matrix, unsigned int rows, unsigned int colum
 	return matrix;
 }
 
-unsigned int read_size (void) {
-	cout << "Hello! Glad to see you in this game! Please, write size of table for X-0 game in format <<size X size>>: ";
+bool true_size (unsigned int &size) {
+	bool ok=true;
 	unsigned int size1, size2;
 	char op;
 	
 	std::string line;
 	std::getline( std::cin, line );
 	std::istringstream stream (line);
-	while (!(stream>>size1 && stream>>op && op=='X' && stream>>size2 && size1==size2)) {		
-		cout << endl << "You`ve made a mistake. Please, try again: ";
-		std::getline( std::cin, line );
-		std::istringstream stream (line);
+	if (stream>>size1 && size1>1 && stream>>op && op=='X' && stream>>size2 && size1==size2) {	
+		ok=!ok;
+		size=size1;
 	}
-	return size1;
+	return ok;
+}
+
+unsigned int read_size (void) {
+	cout << "Hello! Glad to see you in this game! Please, write size of table for X-0 game in format <<size X size>> (size>1!): ";
+	unsigned int size;
+	
+	while (true_size(size)) {		
+		cout << endl << "You`ve made a mistake. Please, try again: ";
+	}
+	
+	return size;
 }
 
 void show_game (char **array, unsigned int size) {
